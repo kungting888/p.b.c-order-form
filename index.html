@@ -1,60 +1,27 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8">
-  <title>點餐表單</title>
-  <style>
-    body {
-      background-color: #444;
-      color: #fff;
-      font-family: sans-serif;
-    }
-    .container {
-      margin: 40px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h2>🧾 點餐表單</h2>
-    <form id="orderForm">
-      <input type="text" name="name" placeholder="姓名" required><br>
-      <input type="text" name="phone" placeholder="電話" required><br><br>
-      <label><input type="radio" name="drink" value="MOJITO" required> MOJITO</label><br>
-      <label><input type="radio" name="drink" value="MAITAI"> MAITAI</label><br>
-      <label><input type="radio" name="drink" value="LONG ISLAND"> LONG ISLAND</label><br>
-      <label><input type="radio" name="drink" value="水蜜桃冰茶"> 水蜜桃冰茶</label><br>
-      <label><input type="radio" name="drink" value="田納西冰茶"> 田納西冰茶</label><br><br>
-      <button type="submit">送出訂單</button>
-    </form>
-  </div>
+<script>
+  document.getElementById("orderForm").addEventListener("submit", function(event) {
+    event.preventDefault();
 
-  <script>
-    document.getElementById("orderForm").addEventListener("submit", function(event) {
-      event.preventDefault();
+    const formData = new FormData(this);
+    const data = {
+      name: formData.get("name"),
+      phone: formData.get("phone"),
+      drink: formData.get("drink")
+    };
 
-      const formData = new FormData(this);
-      const data = {
-        name: formData.get("name"),
-        phone: formData.get("phone"),
-        drink: formData.get("drink")
-      };
-
-      fetch("https://script.google.com/macros/s/AKfycbzs694VOxaPF5XRu77OPc-I4gjCat-jWJos7t5fl8XwuM5T4I4IityhUMvr84vvYJi-/exec", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      .then(res => res.json())
-      .then(res => {
-        alert("✅ 成功送出：\n" + JSON.stringify(res));
-      })
-      .catch(err => {
-        alert("❌ 發生錯誤：\n" + err.message);
-      });
+    fetch("https://script.google.com/macros/s/AKfycbzs694VOxaPF5XRu77OPc-I4gjCat-jWJos7t5fl8XwuM5T4I4IityhUMvr84vvYJi-/exec", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.json())
+    .then(result => {
+      alert("✅ 成功送出：\n" + JSON.stringify(result));
+    })
+    .catch(error => {
+      alert("❌ 發送失敗：\n" + error.message);
     });
-  </script>
-</body>
-</html>
+  });
+</script>
