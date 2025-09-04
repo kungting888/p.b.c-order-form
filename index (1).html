@@ -1,0 +1,101 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>P.B.C 點餐表單</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #fefefe;
+      line-height: 1.6;
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+    .drink-option {
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 12px 20px;
+      background-color: #00c48c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #009f6b;
+    }
+  </style>
+</head>
+<body>
+  <h1>P.B.C 派對點餐系統</h1>
+  <form id="order-form">
+    <label for="name">姓名</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="phone">電話</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <label>請選擇一杯飲品：</label>
+    <div class="drink-option"><input type="radio" name="drink" value="MOJITO"> MOJITO（酒精10%，含薄荷葉、萊姆酒）</div>
+    <div class="drink-option"><input type="radio" name="drink" value="MAITAI"> MAITAI（酒精15%，含鳳梨汁、萊姆酒）</div>
+    <div class="drink-option"><input type="radio" name="drink" value="LONG ISLAND"> LONG ISLAND（酒精20%，含蔓越莓汁、萊姆酒）</div>
+    <div class="drink-option"><input type="radio" name="drink" value="水蜜桃冰茶"> 水蜜桃冰茶（無酒精，含蔓越莓汁）</div>
+    <div class="drink-option"><input type="radio" name="drink" value="田納西冰茶"> 田納西冰茶（無酒精，含鳳梨汁）</div>
+
+    <button type="submit">送出訂單</button>
+  </form>
+
+  <script>
+    document.getElementById("order-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const drink = document.querySelector('input[name="drink"]:checked')?.value;
+
+      if (!drink) {
+        alert("請選擇一杯飲品！");
+        return;
+      }
+
+      const url = "https://script.google.com/macros/s/AKfycbzs694VOxaPF5XRu77OPc-I4gjCat-jWJos7t5fl8XwuM5T4I4IityhUMvr84vvYJi-/exec";
+
+      fetch(url, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          drink
+        })
+      });
+
+      alert("訂單已送出！");
+      document.getElementById("order-form").reset();
+    });
+  </script>
+</body>
+</html>
