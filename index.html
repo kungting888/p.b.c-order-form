@@ -1,28 +1,48 @@
-<script>
-  document.getElementById("order-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const name = document.getElementById("name").value;
-    const phone = document.getElementById("phone").value;
-    const drink = document.querySelector("input[name='drink']:checked")?.value;
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>P.B.C 點餐表單</title>
+</head>
+<body>
+  <h2>🧾 點餐表單</h2>
+  <form id="orderForm">
+    <input type="text" name="name" placeholder="姓名" required><br><br>
+    <input type="text" name="phone" placeholder="電話" required><br><br>
 
-    if (!drink) {
-      alert("請選擇一項飲品");
-      return;
-    }
+    <label><input type="radio" name="drink" value="MOJITO" required> MOJITO</label><br>
+    <label><input type="radio" name="drink" value="MAITAI"> MAITAI</label><br>
+    <label><input type="radio" name="drink" value="LONG ISLAND"> LONG ISLAND</label><br>
+    <label><input type="radio" name="drink" value="水蜜桃冰茶"> 水蜜桃冰茶</label><br>
+    <label><input type="radio" name="drink" value="田納西冰茶"> 田納西冰茶</label><br><br>
 
-    fetch("https://script.google.com/macros/s/AKfycbzs694VOxaPF5XRu77OPc-I4gjCat-jWJos7t5fl8XwuM5T4I4IityhUMvr84vvYJi-/exec", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name, phone, drink })
-    })
-    .then(response => response.json())
-    .then(data => {
-      alert("✅ 成功送出：" + JSON.stringify(data));
-    })
-    .catch(error => {
-      alert("❌ 發生錯誤：" + error.message);
+    <button type="submit">送出訂單</button>
+  </form>
+
+  <script>
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = {
+        name: formData.get("name"),
+        phone: formData.get("phone"),
+        drink: formData.get("drink")
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycbzs694VOxaPF5XRu77OPc-I4gjCat-jWJos7t5fl8XwuM5T4I4IityhUMvr84vvYJi-/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      })
+      .then(res => res.text())
+      .then(txt => {
+        alert("✅ 成功送出：" + txt);
+      })
+      .catch(err => {
+        alert("❌ 發生錯誤：" + err);
+      });
     });
-  });
-</script>
+  </script>
+</body>
+</html>
